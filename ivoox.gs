@@ -1,13 +1,16 @@
 function ivoox() {
 
-var agent = '"iVoox/2.203 (Linux; Android 6.0; Scale/1.0)"';
-var url  = "http://api.ivoox.com/1-1/?function=getSuscriptionAudios&format=json&session=888888888888";
+// '"iVoox/2.203 (Linux; Android 6.0; Scale/1.0)"';
+var agent =  "ivooxApp/2.204_176 (MI 3W Build/KTU84P; Android 5.1.1; d:1000; KTU84P) ";
+var url  = "http://api.ivoox.com/1-1/?function=getSuscriptionAudios&format=json&session=457475445745";
 
 var headers = {
     'User-Agent': agent,
     'Accept-Encoding': 'gzip',
     'accept-language': 'es-ES',
-    'Connection': 'Keep-Alive',}
+    'user-lang': 'spa' ,
+    'user-country': 'ES', 
+    'Connection': 'Keep-Alive'}
 
 var options = {
     'method' : 'post',
@@ -15,19 +18,25 @@ var options = {
   
 var i = 0;
 
-while (1){
-	var response = UrlFetchApp.fetch( url , options );
-    if (response.getResponseCode() == 200 || i > 9) { break ;}
-    i += 1
-    Utilities.sleep(2000*i);
-    //console.log(response);
+while (1) {
+  try {
+    var response = UrlFetchApp.fetch( url , options );
+    Logger.log('Response Code: ' + response.getResponseCode());
+
+    if(response.getResponseCode() == 200) {
+      break ;
+    }
+  } catch (err) {
+      Utilities.sleep(20000);
+  }
+
 }  
-  var ss = SpreadsheetApp.openById("1Rzikpj5xl5EWyII0Ie7i8gwLVBXI7q717imqynHUMQM");
+  
+  var ss = SpreadsheetApp.openById("fgdfgdfgdfgdfgerhvbghftfjfghsgdfhetreryetyytry");
   var sheet = ss.getSheetByName("hoja1");
   var pasteSheet = ss.getSheetByName("hoja2");
   
-  var dataAll = JSON.parse(response.getContentText()); //
-  var dataSet = dataAll;
+  var dataSet = JSON.parse(response.getContentText()); //
   var rows = [],data;
  
   for (i = 0; i < dataSet.length; i++) {
@@ -36,6 +45,7 @@ while (1){
   }
 
   dataRange = sheet.getRange(1, 1, rows.length, 4); // 3 Denotes total number of entites
+  
   dataRange.setValues(rows);
   
   var range = sheet.getRange("A1:C23");
@@ -67,10 +77,10 @@ while (1){
 
 function telegram(msg){
   
-TOKEN = '000000000:AAH-1mZ3C-000000000000000000000000000';
+TOKEN = '34534534534:AAH-1mZ3C-9999999999999999999999';
 BASE_URL = 'https://api.telegram.org/bot' + TOKEN + '/';
 
- var formData = {'chat_id': '00000000','text': msg };
+ var formData = {'chat_id': '9999999','text': msg };
  var options = {'method' : 'post','payload' : formData };
  UrlFetchApp.fetch(BASE_URL + 'sendMessage', options);
     
@@ -79,10 +89,12 @@ BASE_URL = 'https://api.telegram.org/bot' + TOKEN + '/';
 
 
 function acraCleanup() {
-  var ss = SpreadsheetApp.openById("1Rzikpj5xl5EWyII0Ie7i8gwLVBXI7q717imqynHUMQM");
+  var ss = SpreadsheetApp.openById("99999999999999999999999999999999999");
   var pasteSheet = ss.getSheetByName("hoja2");
-  var rowsToKeep = 50; //CHANGE TO YOUR DESIRED NUMBER OF ROWS TO KEEP. 
+  var rowsToKeep = 22; //CHANGE TO YOUR DESIRED NUMBER OF ROWS TO KEEP. 
   var rows = pasteSheet.getLastRow(); 
+  if (rows > rowsToKeep) {
   var numToDelete = rows - rowsToKeep  -1; 
   pasteSheet.deleteRows(2, numToDelete); 
-} 
+  } 
+};
